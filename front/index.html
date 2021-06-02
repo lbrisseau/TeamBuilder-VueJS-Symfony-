@@ -54,8 +54,6 @@
 							</button>
 						</div>
 					</div>
-
-
 				</div>
 				<div id="demo"></div>
 			</div>
@@ -79,12 +77,9 @@
 					</div>
 
 				</div>
-
-
-
 				<div class="divListUser">
-					<table id="tabListUser" v-for="(p, index) in tabPersonnes" >
-						<tr>{{ p.nom }}</tr>
+					<table id="tabListUser" v-for="(ps, index) in tabPersonnes" >
+						<tr>{{ ps.nom }}</tr>
 					</table>
 				</div>
 
@@ -109,37 +104,11 @@
 				methods:
 				{
 					ajouterPersonne() {
-						let p = {}; // creation d objet
-						p.nom = this.nomInput;
-						p.prenom = this.prenomInput;
-						this.nomInput = '';
-						this.prenomInput = '';
-						// on ajoute ds le tableau
-						let url = 'http://localhost/TP%20VueJS/TP3%20courses/tp/back/public/items/';
-						axios.post(url, item)
-							.then(
-								response => {
-									console.log(response.data)
-								});
+						
 					},
 					supprimerPersonne(i) {
 
-						let id = this.tableau[i].id;
-						this.tableau.splice(i, 1);
-						console.log(id);
-						let url = 'http://localhost/TP%20VueJS/TP3%20courses/tp/back/public/items/' + id;
-
-						let param = {};
-						param.method = 'DELETE';
-						param.header = { 'content-Type': 'application/json' };
-
-						fetch(url, param)
-							.then(response => response.json())
-							.then(
-								info => {
-									console.log(info);
-								});
-					}
+					},
 				},
 				mounted() {
 					let url = 'http://localhost/TP%20VueJS/TP4%20team/tp/back/public/personnes/';
