@@ -45,17 +45,51 @@
 				<div class="divTeam">
 					<div class="row">
 						<div class="col-4">
-
-							<input class="form-control" id="team" placeholder="Nom de l'Equipe">
+							<input class="form-control" id="team" placeholder="Nom de l'Equipe" v-model="nomEquipe">
 						</div>
 						<div class="col-8">
-							<button class="btn btn-success" id="btnAddTeam">
+							<button class="btn btn-success" id="btnAddTeam" @click="ajouterEquipe()">
 								<i class="fa fa-plus"></i>
 							</button>
 						</div>
 					</div>
 				</div>
-				<div id="demo"></div>
+				<div id="demo" v-for="(e, index) in tabEquipes">
+					<table class="table table-striped">
+						<tbody>
+							<tr>
+								<td colspan="3">
+									<h3>
+										{{ e.nom }}
+										<button class="btn btn-primary">del</button>
+									</h3>
+								</td>
+							</tr>
+
+							<tr>
+								<th>Prénom</th>
+								<th>Nom</th>
+								<th>Action</th>
+							</tr>
+
+							<tr>
+								<td>John</td>
+								<td>DOE</td>
+								<td><button class="btn btn-primary">del</button></td>
+							</tr>
+							<tr>
+								<td>Tom</td>
+								<td>Cruise</td>
+								<td><button class="btn btn-primary">del</button></td>
+							</tr>
+							<tr>
+								<td>Nicolas</td>
+								<td>CAGE</td>
+								<td><button class="btn btn-primary">del</button></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 			<div class="col-md-4">
 				<div class="divUser">
@@ -66,8 +100,9 @@
 						<input class="form-control" placeholder="Nom" type="text" id="nom" v-model="nom" />
 					</div>
 					<div class="form-group">
-						<select class="form-control" id="MyUserTeam">
-							<option value="0">Pas d'Equipe</option>
+						<select class="form-control" id="MyUserTeam" v-model="equipeIndex">
+							<option value="-1">Pas d'Equipe</option>
+							<option v-for="(e, index) in tabEquipes" v-bind:value="index">{{ e.nom }}</option>
 						</select>
 					</div>
 					<div class="form-group text-center mb-0">
@@ -104,8 +139,10 @@
 				el: '#teambuilder',
 				data:
 				{
+					equipeIndex: -1,
 					tabPersonnes: [],
 					tabEquipes: [],
+					nomEquipe: '',
 					nom: '',
 					prenom: '',
 				},
@@ -117,16 +154,21 @@
 						p.nom = this.nom;
 						this.prenom = '';
 						this.nom = '';
+				
+						console.log(this.equipeIndex);
+						console.log(this.tabEquipes[this.equipeIndex].id);
+
+						let id = this.tabEquipes[this.equipeIndex].id
 
 						// on ajoute ds le tableau
-						let url = 'http://localhost/TP%20VueJS/TP4%20team/tp/back/public/personnes/';
+						let url = 'http://localhost/TP%20VueJS/TP4%20team/tp/back/public/personnes/ '+id;
 						axios.post(url, {
 							prenom: p.prenom,
 							nom: p.nom
 						})
 							.then(response => {
 								objId = response.data;
-								console.log(objId); 
+								console.log(objId);
 								p.id = objId.id;
 								this.tabPersonnes.push(p);
 								console.log(this.tabPersonnes);
@@ -138,7 +180,25 @@
 						axios.delete(url)
 							.then(response => {
 								console.log(response.data);
-								this.tabPersonnes.splice(i, 1); 
+								this.tabPersonnes.splice(i, 1);
+							});
+					},
+					ajouterEquipe() {
+						let e = {}; // creation d objet
+						e.nom = this.nomEquipe;
+						this.nomEquipe = '';
+						
+						// on ajoute ds le tableau
+						let url = 'http://localhost/TP%20VueJS/TP4%20team/tp/back/public/equipes/';
+						axios.post(url, {
+							nom: e.nom
+						})
+							.then(response => {
+								objId = response.data;
+								console.log(objId);
+								e.id = objId.id;
+								this.tabEquipes.push(e);
+								console.log(this.tabEquipes);
 							});
 					},
 				},
@@ -148,6 +208,12 @@
 						.then(
 							response => {
 								this.tabPersonnes = response.data;
+							});
+					let url2 = 'http://localhost/TP%20VueJS/TP4%20team/tp/back/public/equipes/';
+					axios.get(url2)
+						.then(
+							response => {
+								this.tabEquipes = response.data;
 							});
 				}
 			});

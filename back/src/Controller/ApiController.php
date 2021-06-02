@@ -15,15 +15,16 @@ use Doctrine\ORM\EntityManagerInterface;
 class ApiController extends AbstractController
 {
     /**
-     * @Route("/personnes/", name="add_personne", methods={"POST"})
+     * @Route("/personnes/{id}", name="add_personne", methods={"POST"})
      */
-    public function addPersonne(Request $request, EntityManagerInterface $em): Response
+    public function addPersonne(Equipe $equipe, Request $request, EntityManagerInterface $em): Response
     {
         $data = json_decode($request->getContent());
         $personne = new Personne();
         // hydrater
         $personne->setPrenom($data->prenom);
         $personne->setNom($data->nom);
+        $personne->setEquipe($equipe);
         $em->persist($personne);
         $em->flush();
         $tab["id"] = $personne->getId();
