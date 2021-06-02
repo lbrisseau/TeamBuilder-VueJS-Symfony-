@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Mini projet Equipe de personnes</title>
+	<meta charset="utf-8">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" >
+	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script src="script.js"></script>
+
+	<style>
+	.divListUser,.divUser{
+		background-color: #ccc;
+		padding: 20px;
+	}
+	.divListUser{
+		margin-top:20px;
+	}	
+
+	.divTeam{
+		background-color: #ccc;
+		padding: 20px;
+	}
+	#tabListUser td{ height: 45px; width:120px;}
+
+
+	</style>
+</head>
+	<body>
+		<div class="container">
+			
+			<div class="row">
+				<div class="col-md-8">
+				<div class="divTeam">
+					Equipe : 
+					<input type="text" id="team">
+					<a class="btn btn-success" 
+								id="btnAddTeam" role="button">
+								<span class="glyphicon glyphicon-plus"></span>
+								Ajouter une equipe
+							</a>
+							
+				</div>
+				<div id="demo">
+					<table class="table table-striped">
+						<tbody>
+						<tr>
+							<td colspan="3">
+								<h3>
+									Team A
+									<button class="btn btn-primary">del</button>
+								</h3> 
+							</td>
+
+						</tr>
+					
+						<tr>
+							<th>Prénom</th>
+							<th>Nom</th>
+							<th>Action</th>
+						</tr>
+					
+						<tr>
+							<td>John</td>
+							<td>DOE</td>
+							<td><button class="btn btn-primary">del</button></td>
+						</tr>
+						<tr>
+							<td>Tom</td>
+							<td>Cruise</td>
+							<td><button class="btn btn-primary">del</button></td>
+						</tr>
+						<tr>
+							<td>Nicolas</td>
+							<td>CAGE</td>
+							<td><button class="btn btn-primary">del</button></td>
+						</tr>
+					</tbody>
+					</table>
+				</div>
+				</div>
+				<div class="col-md-4">
+				<div class="divUser">
+					<table>
+						<tr>
+							<td>Nom :</td>
+							<td><input type="text" id="nom" /></td>
+						</tr>
+						<tr>
+							<td>Prenom :</td>
+							<td><input type="text" id="prenom" /></td>
+						</tr>
+						
+						<tr>
+							<td>Team :</td>
+							<td><select id="MyUserTeam">
+							<option value="0"></option>		
+							</select></td>
+						</tr>
+
+						<tr>
+							<td>&nbsp;</td>
+							<td>
+							<a class="btn btn-success" 
+								id="btnAddUser" role="button">
+								<span class="glyphicon glyphicon-plus"></span>
+								Ajouter une personne
+							</a>
+						</td>
+						</tr>
+					</table>
+				</div><!-- divUser -->	
+				
+				
+				
+				<div class="divListUser">
+					
+					<table id="tabListUser">
+					
+				</table>
+					</div>
+				
+			</div>	<!-- col4 -->
+			</div><!-- row -->
+			
+		</div><!-- container -->
+
+	</body>
+</html>

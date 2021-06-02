@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Mini projet Equipe de personnes</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" >
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+
+	
+
+	<style>
+		.divListUser,.divUser{
+			background-color: #ccc;
+			padding: 20px;
+			border-radius: 20px
+		}
+		.divListUser{
+			margin-top:20px;
+			border-radius: 20px
+		}	
+
+		.divTeam{
+			background-color: #ccc;
+			padding: 20px;
+			border-radius: 20px
+		}
+		#tabListUser td{ height: 45px; width:120px;}
+
+
+	</style>
+</head>
+<body>
+	<div class="container mt-3">
+
+		<div class="row">
+			<div class="col-md-8">
+				<div class="divTeam">
+					<div class="row">
+						<div class="col-4">
+							
+							<input class="form-control"  id="team" placeholder="Nom de l'Equipe">
+						</div>
+						<div class="col-8">
+							<button class="btn btn-success" 
+							id="btnAddTeam">
+							<i class="fa fa-plus"></i>
+						</button>
+					</div>
+				</div>
+
+
+			</div>
+			<div id="demo"></div>
+		</div>
+		<div class="col-md-4">
+			<div class="divUser">
+				<div class="form-group">
+					<input class="form-control" 
+					placeholder="Prénom" type="text" id="prenom" />
+				</div>
+				<div class="form-group">
+					<input class="form-control" 
+					placeholder="Nom" type="text" id="nom" />
+				</div>
+				<div class="form-group">
+					<select class="form-control" id="MyUserTeam">
+						<option value="0">Pas d'Equipe</option>		
+					</select>
+				</div>
+				<div class="form-group text-center mb-0">
+					<button class="btn btn-success btn-lg " 
+					id="btnAddUser">
+					<i class="fa fa-plus"></i>
+				</button>
+			</div>
+
+		</div>
+
+
+
+		<div class="divListUser">
+			<table id="tabListUser">
+
+			</table>
+		</div>
+
+	</div>	<!-- col4 -->
+</div><!-- row -->
+
+</div><!-- container -->
+
+<script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
+
+<script>
+	var idPerson=0;
+	var teamId=0;
+
+	$(function(){ // doc ready function
+
+	//---------------------------------	
+	tabTeam	= [];
+	indiceTeam	= 0;
+	indiceUser	= 0;
+	//--------------------------------------
+	//
+	// ADD TEAM
+	//
+	//--------------------------------------
+	$("#btnAddTeam").click(function(){
+		//$('#spinner').show();
+		var teamName =$('#team').val();
+		teamId++;
+  			//indiceTeam++;
+  			var str,str2;
+
+  			str ="<br><br>";
+  			str +='<table class="table table-striped" data-id='+teamId+'>';
+  			str	+="<tr>";
+  			str	+="<td colspan=2><h3> "+teamName;
+  			str	+=' <button class="btn btn-danger btnDelTeam">';
+  			str	+='<i class="fa fa-trash"></i>';
+  			str	+='</button></h3></td>';
+  			str	+="</tr>";
+			// entete du tableau
+			str	+="<tr>";
+			str	+="<th>Nom</th><th>Prenom</th>";
+			str	+="</tr>";
+			str	+="</table>";
+			$('#demo').append(str);
+			// ajout au menu deroulant
+			str2 ='<option value="'+teamId+'">'+teamName+'</option>';
+			$('#MyUserTeam').append(str2);
+			// on enregitre	
+			tab=[];	
+			tabTeam.push({id: teamId,name:teamName,tabPerson:tab});
+			console.log(tabTeam);
+			$(".divUser").show();
+			$("#team").val("");
+
+
+
+	}); // btn Add User (person)
+	//--------------------------------------
+	//
+	// ADD USER (Person)
+	//
+	//--------------------------------------
+
+	$("#btnAddUser").click(function(){
+
+		var myTeamId = $('#MyUserTeam').val();
+		
+		indiceUser++;
+		var nom 		= $('#nom').val();
+		var prenom 	= $('#prenom').val();
+		$('#nom,#prenom').val("");
+		var ligne = '<tr data-id="'+ indiceUser +'">';
+		ligne +="<td>"+prenom +" "+nom +"</td>";
+		ligne +="<td>";
+		ligne +='<button type="button" class="btnDelUser btn btn-danger">';
+		ligne +='<i class="fa fa-trash"></i>';
+		ligne +='</button>';
+		ligne +='</td></tr>'; 
+		$('#tabListUser').append(ligne)
+		
+		if (myTeamId != 0){
+			var ligne = '<tr>';
+			ligne +='<td>'+nom+'</td>';
+			ligne +='<td>'+prenom+'</td>';
+			ligne += '</tr>';
+			$('table[data-id='+myTeamId+']').append(ligne);
+		}
+		
+	});  // click add User
+	//--------------------------------------
+	//
+	// Delete Team
+	//
+	//--------------------------------------
+
+	$(document).on("click",'.btnDelTeam', function(){
+		$(this).parents("table").remove();
+	});
+	
+	$(document).on("click",'.btnDelUser', function(){
+		$(this).parents("tr").hide(1000);
+		
+	});
+
+	//---------------------------------	
+	}); // doc ready function
+	//---------------------------------	
+</script>
+</body>
+</html>
