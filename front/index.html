@@ -83,8 +83,8 @@
 
 
 				<div class="divListUser">
-					<table id="tabListUser">
-
+					<table id="tabListUser" v-for="(p, index) in tabPersonnes" >
+						<tr>{{ p.nom }}</tr>
 					</table>
 				</div>
 
@@ -93,6 +93,8 @@
 
 	</div><!-- container -->
 	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+	<!-- cdn axios -->
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 	<script>
 		const app = new Vue(
@@ -102,94 +104,22 @@
 				{
 					tabPersonnes: [],
 					tabEquipes: [],
-			
+
 				},
 				methods:
 				{
-					isBought(o) {
-						if (o.status == true) {
-							return true;
-						}
-					},
-
-					isNotBought(o) {
-						if (o.status == false) {
-							return true;
-						}
-					},
-
-					buy(o) {
-						o.status = true;
-						// on ajoute ds le tableau
-						let url = 'http://localhost/TP%20VueJS/TP3%20courses/tp/back/public/items/' + o.id;;
-						let param = {};
-						param.method = 'PUT';
-						param.header = { 'content-Type': 'application/json' };
-						param.body = JSON.stringify(o);
-						fetch(url, param)
-							.then(response => response.json())
-							.then(
-								info => {
-									console.log(info);
-								});
-
-					},
-					ajouterEquipe() {
-						let o = {}; // creation d objet
-						o.title = this.title;
-						o.status = false;
-						this.title = '';
-						// on ajoute ds le tableau
-						let url = 'http://localhost/TP%20VueJS/TP3%20courses/tp/back/public/items/';
-						let param = {};
-						param.method = 'POST';
-						param.header = { 'content-Type': 'application/json' };
-						param.body = JSON.stringify(o);
-						fetch(url, param)
-							.then(response => response.json())
-							.then(
-								info => {
-									console.log(info);
-									o.id = info.id;
-									this.tableau.push(o);
-								});
-					},
-					supprimerEquipe(i) {
-
-						let id = this.tableau[i].id;
-						this.tableau.splice(i, 1);
-						console.log(id);
-						let url = 'http://localhost/TP%20VueJS/TP3%20courses/tp/back/public/items/' + id;
-
-						let param = {};
-						param.method = 'DELETE';
-						param.header = { 'content-Type': 'application/json' };
-
-						fetch(url, param)
-							.then(response => response.json())
-							.then(
-								info => {
-									console.log(info);
-								});
-					}
 					ajouterPersonne() {
-						let o = {}; // creation d objet
-						o.title = this.title;
-						o.status = false;
-						this.title = '';
+						let p = {}; // creation d objet
+						p.nom = this.nomInput;
+						p.prenom = this.prenomInput;
+						this.nomInput = '';
+						this.prenomInput = '';
 						// on ajoute ds le tableau
 						let url = 'http://localhost/TP%20VueJS/TP3%20courses/tp/back/public/items/';
-						let param = {};
-						param.method = 'POST';
-						param.header = { 'content-Type': 'application/json' };
-						param.body = JSON.stringify(o);
-						fetch(url, param)
-							.then(response => response.json())
+						axios.post(url, item)
 							.then(
-								info => {
-									console.log(info);
-									o.id = info.id;
-									this.tableau.push(o);
+								response => {
+									console.log(response.data)
 								});
 					},
 					supprimerPersonne(i) {
@@ -212,12 +142,12 @@
 					}
 				},
 				mounted() {
-					let url = 'http://localhost/TP%20VueJS/TP3%20courses/tp/back/public/items/';
-					fetch(url)
-						.then(response => response.json())
+					let url = 'http://localhost/TP%20VueJS/TP4%20team/tp/back/public/personnes/';
+					axios.get(url)
 						.then(
-							tab => {
-								this.tableau = tab;
+							response => {
+								this.tabPersonnes = response.data;
+								console.log(this.tabPersonnes);
 							});
 				}
 			});
